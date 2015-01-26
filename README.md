@@ -4,6 +4,8 @@ mongodb-fixture
 #### MongoDB fixture utility for unit testing ####
 
 [![npm][npm-image]][npm-url]
+[![travis][travis-image]][travis-url]
+[![coveralls][coveralls-image]][coveralls-url]
 
 The only __real__ way to ensure that a query returns what it should is by executing it in a __real__ database. Database calls can be stubbed when you don't want to execute driver calls, but if you need to test the query itself, then you're forced to talk with the database.
 
@@ -28,6 +30,11 @@ before(function (done) {
     
     done();
   });
+});
+
+after(function (done) {
+  // Clean the state and disconnect
+  mongodb.tearDown(done);
 });
 
 describe('foo', function () {
@@ -75,11 +82,6 @@ describe('foo', function () {
     });
   });
 });
-
-after(function (done) {
-  // Clean the state and disconnect
-  mongodb.tearDown(done);
-});
 ```
 
 ___module_([options]) : TestConnection__
@@ -97,4 +99,8 @@ Options:
 
 [npm-image]: https://img.shields.io/npm/v/mongodb-fixture.svg?style=flat
 [npm-url]: https://npmjs.org/package/mongodb-fixture
+[travis-image]: https://img.shields.io/travis/gagle/node-mongodb-fixture.svg?style=flat
+[travis-url]: https://travis-ci.org/gagle/node-mongodb-fixture
+[coveralls-image]: https://img.shields.io/coveralls/gagle/node-mongodb-fixture.svg?style=flat
+[coveralls-url]: https://coveralls.io/r/gagle/node-mongodb-fixture
 [server-app]: http://hapijs.com/api#serverapp
