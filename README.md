@@ -62,7 +62,7 @@ describe('foo', function () {
     mongodb.get('collection1', function (err, docs) {
       if (err) return done(err);
 
-      expect(docs).to.have.length(2).and.to.deep.equal([
+      expect(docs).to.deep.equal([
         { doc: 1 },
         { doc: 2 }
       ]);
@@ -95,7 +95,53 @@ Options:
 - __database__ - _String_  
   Name of the database. Default is `testing`.
 - __db__ - _Object_  
-  MongoDB Db object. If the Db object is passed, the other options are ignored.
+  MongoDB Db object. If the Db object is passed, the other options are ignored. The connection is opened automatically if it's not.
+
+__TestConnection#fixture(fixture, callback) : undefined__
+
+Inserts documents into collections, that is, sets the state of the database with data. The callback receives an error as the first argument.
+
+`fixture` is an object whose keys are the collection name and their value an array of documents:
+
+```javascript
+fixture({
+  collection1: [
+    { doc: 1 },
+    { doc: 2 }
+  ],
+  collection2: [
+    { row: 1 },
+    { row: 2 }
+  ]
+}, cb);
+```
+
+__TestConnection#get(collection[, query[, projection]], callback) : undefined__
+
+Returns  all the rows from the given collection. The callback receives an error as the first argument and an array as the second.
+
+```javascript
+get('collection', cb)
+get('collection', { foo: 'bar' }, cb)
+get('collection', { foo: 'bar' }, { foo: true }, cb)
+get('collection', null, { foo: true }, cb)
+```
+
+__TestConnection#last(collection[, projection], callback) : undefined__
+
+Returns the last inserted document or null if the collection is empty. The callback receives an error as the first argument and the document as the second.
+
+__TestConnection#reset(callback) : undefined__
+
+Drops the selected database. Use it to ensure a clean state. The callback receives an error as the first argument.
+
+__TestConnection#setUp(callback) : undefined__
+
+Opens a connection and drops the selected database to ensure a clean initial state. Set up only once per test. The callback receives an error as the first argument.
+
+__TestConnection#tearDown(callback) : undefined__
+
+Drops the selected database and disconnects. Tear down onlt once per test. The callback receives an error as the first argument.
 
 [npm-image]: https://img.shields.io/npm/v/mongodb-fixture.svg?style=flat
 [npm-url]: https://npmjs.org/package/mongodb-fixture
