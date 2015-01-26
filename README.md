@@ -9,13 +9,13 @@ mongodb-fixture
 
 The only __real__ way to ensure that a query returns what it should is by executing it in a __real__ database. Database calls can be stubbed when you don't want to execute driver calls, but if you need to test the query itself, then you're forced to talk with the database.
 
-Sure, it'll be better to have some kind of module with the implementation of the full query interface and operators, but who does it better than the MongoDB driver? The ideal case would be to have in-memory mode for MongoDB to avoid disk usage.
+Sure, it'll be better to have some kind of module with the implementation of the full query interface and operators, but we already have a one, the MongoDB drivers, so let's use them. It'd be good to have an in-memory mode for MongoDB to avoid disk usage, but for now a MongoDB process running is all what we need.
 
-This library just wraps some MongoDB driver calls for your convenience and exposes the Db object. You can store data easily and reset the state with each test. Set up and tear down the connection only once per test execution.
+This library just wraps some driver calls for your convenience and exposes the Db object. You can store data easily and reset the state for each test. Set up and tear down the connection only once per test execution.
 
 By default, the `testing` database will be used for testing. So, be sure that the database doesn't contain data since it will be dropped when the connection is established to ensure a clean initial state.
 
-If your server is well-structured, you should have the MongoDB Db connection object injected in your code somehow, so you could easily replace the real database connection with a fake connection used for testing purposes. For example, if you're using the Hapi framework, I recommend to store the Db object in the [server.app][server-app] namespace and use that object from inside any Hapi method. This way you can easily methods and route handlers without hardcoding dependencies by using `require()`.
+If your server is well-structured, you should have the MongoDB Db connection object injected in your code somehow, so you could easily replace the real database connection with a fake connection for testing purposes. For example, if you're using the Hapi framework, I recommend to store the Db object in the [server.app][server-app] namespace and get the connection object from inside any Hapi method as a dependency injection. This way you can easily test methods and route handlers without hardcoding dependencies by using `require()`.
 
 ```javascript
 // mongodb://localhost:27017/testing
@@ -96,6 +96,10 @@ Options:
   Name of the database. Default is `testing`.
 - __db__ - _Object_  
   MongoDB Db object. If the Db object is passed, the other options are ignored. The connection is opened automatically if it's not.
+
+__TestConnection#db__
+
+The MongoDB Db connection object.
 
 __TestConnection#fixture(fixture, callback) : undefined__
 
