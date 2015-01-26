@@ -22,7 +22,7 @@ If your server is well-structured, you should have the MongoDB Db connection obj
 var mongodb = require('mongodb-fixture')();
 
 before(function (done) {
-  // Connect to he database and ensure a clean initial state
+  // Connect and ensure a clean initial state
   mongodb.setUp(function (err) {
     if (err) return done(err);
 
