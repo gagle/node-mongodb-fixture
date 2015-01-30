@@ -55,6 +55,12 @@ describe('foo', function () {
   after(function (done) {
     // Clean the database to its initial state
     mongodb.reset(done);
+
+    // Or drop the collections by hand
+    mongodb.drop('collection1', function (err) {
+      if (err) return done(err);
+      mongodb.drop('collection2', done);
+    });
   });
 
   it('bar', function (done) {
@@ -76,7 +82,7 @@ describe('foo', function () {
     mongodb.last('collection2', function (err, doc) {
       if (err) return done(err);
 
-      expect(doc).to.exist().and.to.deep.equal({ row: 2 });
+      expect(doc).to.deep.equal({ row: 2 });
 
       done();
     });
@@ -95,11 +101,15 @@ Options:
 - __database__ - _String_  
   Name of the database. Default is `testing`.
 - __db__ - _Object_  
-  MongoDB Db object. If the Db object is passed, the other options are ignored. The connection is opened automatically if it's not.
+  MongoDB Db object. If a Db object is passed, the other options are ignored. The connection is opened automatically if it's not.
 
 __TestConnection#db__
 
 The MongoDB Db connection object.
+
+__TestConnection#drop(collection, callback) : undefined__
+
+Drops the specified collection. The callback receives an error as the first argument.
 
 __TestConnection#fixture(fixture, callback) : undefined__
 

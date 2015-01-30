@@ -1,2 +1,5 @@
+v0.2.0 (31 Jan 2015)
+  Added "drop()" function and added collection caching.
+
 v0.1.0 (26 Jan 2015)
   First release.
