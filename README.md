@@ -1,7 +1,7 @@
 mongodb-fixture
 ===============
 
-#### MongoDB fixture utility for unit testing ####
+#### MongoDB fixture utility for testing ####
 
 [![npm][npm-image]][npm-url]
 
