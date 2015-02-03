@@ -1,7 +1,7 @@
 {
   "name": "mongodb-fixture",
-  "version": "0.2.0",
-  "description": "MongoDB fixture utility for unit testing",
+  "version": "0.3.0",
+  "description": "MongoDB fixture utility for testing",
   "keywords": [
     "mongodb",
     "test",

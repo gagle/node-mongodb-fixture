@@ -1,3 +1,7 @@
+v0.3.0 (03 Feb 2015)
+  "drop()" now can receive an array of collections or an object whose keys are
+    collection names.
+
 v0.2.0 (31 Jan 2015)
   Added "drop()" function and added collection caching.
 
