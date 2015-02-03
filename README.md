@@ -116,7 +116,7 @@ The MongoDB Db connection object.
 
 __TestConnection#drop(collections, callback) : undefined__
 
-Drops the specified collections. `collections` can be a String with the collection name, an array of collection names or an object whose keys are collection names, that is, the `fixture` parameter from `fixture()` can be reused. The callback receives an error as the first argument.
+Drops the specified collections. `collections` can be a String with the collection name, an array of collection names or an object whose keys are collection names, that is, the `fixture` parameter from the `fixture()` function can be reused. The callback receives an error as the first argument.
 
 __TestConnection#fixture(fixture, callback) : undefined__
 
