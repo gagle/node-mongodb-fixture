@@ -36,7 +36,7 @@ after(function (done) {
 });
 
 describe('foo', function () {
-  var fixture = {
+  var collections = {
     collection1: [
       { doc: 1 },
       { doc: 2 }
@@ -49,7 +49,7 @@ describe('foo', function () {
 
   before(function (done) {
     // Populate the database with collections and documents
-    mongodb.fixture(fixture, done);
+    mongodb.fixture(collections, done);
   });
 
   after(function (done) {
@@ -67,7 +67,7 @@ describe('foo', function () {
     mongodb.drop(['collection1', 'collection2'], done);
 
     // best
-    mongodb.drop(fixture, done);
+    mongodb.drop(collections, done);
   });
 
   it('bar', function (done) {
