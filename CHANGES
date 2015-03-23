@@ -1,3 +1,6 @@
+v0.4.0 (23 Mar 2015)
+  The default projection now returns the '_id' field.
+
 v0.3.0 (03 Feb 2015)
   "drop()" now can receive an array of collections or an object whose keys are
     collection names.
