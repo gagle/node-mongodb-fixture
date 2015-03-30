@@ -11,28 +11,32 @@ Sure, it'll be better to have some kind of module with the implementation of the
 
 This library just wraps some driver calls for your convenience and exposes the Db object. You can store data easily and reset the state for each test. Set up and tear down the connection only once per test execution.
 
-By default, the `testing` database will be used for testing. So, be sure that the database doesn't contain data since it will be dropped when the connection is established to ensure a clean initial state.
+Be sure that the database doesn't contain data since it will be dropped when the connection is established to ensure a clean initial state.
 
 If your server is well-structured, you should have the MongoDB Db connection injected into your business logic as a dependency, so you could easily replace the real database connection with a fake connection for testing purposes. For example, if you're using the Hapi framework, I recommend to store the Db object in the [server.app][server-app] namespace and make it available from inside any Hapi method by binding `this`: `server.bind(server.app)`. This way you can easily test methods and route handlers without hardcoding dependencies with `require()` calls.
 
 ```javascript
-// mongodb://localhost:27017/testing
-var mongodb = require('mongodb-fixture')();
+var MongoClient = require('mongodb').MongoClient;
+var mongodbFixture = require('mongodb-fixture');
+
+var database;
 
 before(function (done) {
-  // Connect and ensure a clean initial state
-  mongodb.setUp(function (err) {
+  MongoClient.connect('mongodb://localhost:27017/testing', function (err, db) {
     if (err) return done(err);
 
-    // Pass the 'mongodb.db' object to your system
-    
-    done();
+    // Inject the 'db' object to your system
+
+    database = mongodbFixture(db);
+
+    // Connect and ensure a clean initial state
+    database.setUp(done);
   });
 });
 
 after(function (done) {
   // Clean the state and disconnect
-  mongodb.tearDown(done);
+  database.tearDown(done);
 });
 
 describe('foo', function () {
@@ -49,30 +53,31 @@ describe('foo', function () {
 
   before(function (done) {
     // Populate the database with collections and documents
-    mongodb.fixture(collections, done);
+    database.fixture(collections, done);
   });
 
   after(function (done) {
     // Clean the database to its initial state
-    mongodb.reset(done);
+    database.reset(done);
 
     // Or drop the collections by hand
     // 3 alternatives
-    mongodb.drop('collection1', function (err) {
+    database.drop('collection1', function (err) {
       if (err) return done(err);
-      mongodb.drop('collection2', done);
+
+      database.drop('collection2', done);
     });
 
     // better...
-    mongodb.drop(['collection1', 'collection2'], done);
+    database.drop(['collection1', 'collection2'], done);
 
     // best
-    mongodb.drop(collections, done);
+    database.drop(collections, done);
   });
 
   it('bar', function (done) {
     // Get all the documents from the collection
-    mongodb.get('collection1', function (err, docs) {
+    database.get('collection1', function (err, docs) {
       if (err) return done(err);
 
       expect(docs).to.deep.equal([
@@ -86,7 +91,7 @@ describe('foo', function () {
 
   it('baz', function (done) {
     // Get the last inserted document from the collection
-    mongodb.last('collection2', function (err, doc) {
+    database.last('collection2', function (err, doc) {
       if (err) return done(err);
 
       expect(doc).to.deep.equal({ row: 2 });
@@ -97,22 +102,9 @@ describe('foo', function () {
 });
 ```
 
-___module_([options]) : TestConnection__
+___module_(db) : TestConnection__
 
-Options:
-
-- __host__ - _String_  
-  Hostname of the database. Default is `localhost`.
-- __port__ - _Number_  
-  Port of the database. Default is `27017`.
-- __database__ - _String_  
-  Name of the database. Default is `testing`.
-- __db__ - _Object_  
-  MongoDB Db object. If a Db object is passed, the other options are ignored. The connection is opened automatically if it's not.
-
-__TestConnection#db__
-
-The MongoDB Db connection object.
+Returns a new TestConnection instance. The MongoDB Db object is mandatory. The connection is opened automatically if it's not.
 
 __TestConnection#drop(collections, callback) : undefined__
 

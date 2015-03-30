@@ -1,6 +1,6 @@
 {
   "name": "mongodb-fixture",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "description": "MongoDB fixture utility for testing",
   "keywords": [
     "mongodb",
@@ -11,9 +11,6 @@
   "repository": "git://github.com/gagle/node-mongodb-fixture.git",
   "engines": {
     "node": ">=0.10"
-  },
-  "dependencies": {
-    "mongodb": "^1.4.29"
   },
   "license": "MIT",
   "main": "lib"
