@@ -9,7 +9,7 @@ The only __real__ way to ensure that a query returns what it should is by execut
 
 Sure, it'll be better to have some kind of module with the implementation of the full query interface and operators, but we already have one, the MongoDB drivers, so let's use them. It'd be good to have an in-memory mode for MongoDB to avoid disk usage, but for now a MongoDB process running is all what we need.
 
-This library just wraps some driver calls for your convenience and exposes the Db object. You can store data easily and reset the state for each test. Set up and tear down the connection only once per test execution.
+This library just wraps some driver calls for your convenience and exposes the Db object. You can store data easily and reset the state for each test. Set up and tear down the connection only once per test execution. Despite not explicitly requiring the `mongodb` dependency, it requires a Db object created using the __drivers v2.x.x or higher__.
 
 Be sure that the database doesn't contain data since it will be dropped when the connection is established to ensure a clean initial state.
 
